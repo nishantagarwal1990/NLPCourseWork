@@ -1,0 +1,339 @@
+%-*- Mode:LaTeX; -*-      
+\documentclass[11pt]{article}
+\usepackage{vmargin}		% Force narrower margins
+\usepackage{amsmath}
+\setpapersize{USletter}
+\setmarginsrb{1.0in}{1.0in}{1.0in}{0.6in}{0pt}{0pt}{0pt}{0.4in}
+\setlength{\parskip}{.1in}  % removed space between paragraphs
+\setlength{\parindent}{0in}
+
+\usepackage{epsfig}
+\usepackage{graphicx}
+
+\begin{document}
+
+\large
+\begin{center}
+{\bf CS-5340/6340, Written Assignment \#2} \\
+{\bf DUE: Wednesday, Sept. 30, 2015 by 11:00pm}
+\end{center}
+\normalsize
+
+\begin{enumerate}  
+
+\item (24 pts) For each recursive transition network (RTN) below,
+  write a grammar that accepts exactly the same language as the
+  RTN. \\ 
+
+\hrule
+(a) RTN \#1: 
+
+Solution:\\
+
+$PP \rightarrow prep$ $PP1$\\
+$PP1 \rightarrow noun$ $PP2$\\
+$PP1 \rightarrow PP4$\\
+$PP2 \rightarrow PP3$\\
+$PP3 \rightarrow PP$\\
+$PP4 \rightarrow noun$\\
+
+\hrule 
+(b) RTN \#2: 
+
+Solution: \\
+$NP \rightarrow art$ $NP1$\\
+$NP \rightarrow adj$ $NP2$\\
+$NP1 \rightarrow adj$ $NP1$\\
+$NP1 \rightarrow NP3$\\
+$NP3 \rightarrow noun$\\
+$NP3 \rightarrow noun$ $NP3$\\
+$NP2 \rightarrow adj$ $NP2$\\
+$NP2 \rightarrow NP3$\\
+
+\hrule
+(c) RTN \#3: 
+
+Solution: \\
+$VP \rightarrow VP1$\\
+$VP \rightarrow adv$ $VP$\\
+$VP1 \rightarrow verb$\\
+$VP \rightarrow verb$ $VP1$\\
+$VP1 \rightarrow inf$ $VP2$\\
+$VP2 \rightarrow VP3$\\
+$VP3 \rightarrow verb$\\
+
+
+
+\newpage
+%% ===============================================================
+% QUESTION #2 : Bottom-up Chart Parsing
+%% =============================================================
+
+\item (30 pts) Consider the grammar and lexicon below:
+
+\begin{center}
+\begin{tabular}{|ll|} \hline
+\textbf{Grammar} & \textbf{Lexicon} \\  \hline
+S $\rightarrow$ NP VP & {\it trust} : noun, verb \\
+NP $\rightarrow$ noun & {\it shrinks} :  noun, verb \\
+NP $\rightarrow$ noun noun  & ~ \\
+VP $\rightarrow$ verb & ~ \\
+VP $\rightarrow$ verb NP & ~ \\  \hline
+\end{tabular}
+\end{center}
+
+\vspace*{.1in} List all of the entries that would be put on the chart during
+{\bf bottom-up chart parsing} for the sentence {\bf `trust shrinks'}.
+Each chart entry should be a constituent or a rule, with a start
+and end position indicating which words have been matched by the
+constituent or rule.
+
+To get you started, the list below contains chart entries for the
+part-of-speech tag constituents for the words `trust' and `shrinks'
+and for two rules that should be on the chart. Your job is to complete
+this list by adding the rest of the constituents and rules that would
+be put on the chart during parsing.
+
+For the rules, please use an asterisk (*) to separate the components
+of the rule that have been matched from the ones that have not yet been
+matched. For example, the rule ``NP $\rightarrow$ noun * noun [1-2]'' means that
+ the first noun in this rule has been successfully matched with a
+ constituent starting in position 1 and ending in position 2. \\
+
+\begin{center}
+{\bf Complete the Chart Entries for Bottom-up Chart Parsing of `Trust Shrinks'} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{lc} 
+{\bf Constituent/Rule~~~} & {\bf ~~~Start-End} \\ \hline
+noun(``trust'') &  [1-2] \\
+verb(``trust'') & [1-2] \\
+noun(``shrinks'') & [2-3] \\
+verb(``shrinks'') & [2-3] \\
+NP $\rightarrow$ noun * & [1-2] \\
+NP $\rightarrow$ noun * noun & [1-2] \\ \hline
+S $\rightarrow$ NP * VP & [1-2]\\
+VP $\rightarrow$ verb * & [1-2]\\
+VP $\rightarrow$ verb * NP & [1-2]\\ \hline
+NP $\rightarrow$ noun * & [2-3]\\
+NP $\rightarrow$ noun * noun & [2-3]\\
+NP $\rightarrow$ noun noun * & [1-3]\\ 
+S $\rightarrow$ NP * VP	& [1-3]\\ 
+S $\rightarrow$ NP * VP	& [2-3]\\ \hline
+VP $\rightarrow$ verb * & [2-3]\\
+VP $\rightarrow$ verb * NP & [2-3]\\
+VP $\rightarrow$ verb NP * & [1-3]\\
+S $\rightarrow$ NP VP * & [1-3]\\
+
+
+\end{tabular}
+\end{center}
+
+
+
+
+\newpage
+%% ===============================================================
+% QUESTION #3 : basic probs / n-grams
+%% =============================================================
+
+\item (16 pts) Consider the following tongue twister: 
+
+\begin{quote}
+{\tt whether the weather is warm , whether the weather is hot , we have to
+put up with the weather , whether we like it or not .}
+\end{quote}
+
+Using the tongue twister above as your text corpus, compute the
+following probabilities. Note that this text sample contains 28 words
+because each comma  and period counts as a word. {\it Please leave
+  your answers in fractional form with 
+  the frequency counts used for the computation! For   example, we
+  want to see answers of the form 14/28, not .50}  
+
+\begin{itemize}
+
+\item P(``or'')  = 1/28\\
+
+\item P(``weather'') = 3/28\\
+
+\item P(``weather'' $\mid$ ``the'') = 3/3 = 1\\
+
+\item P(``whether'' $\mid$ ``we'') = 0/2 = 0\\
+
+\item P(``warm'' $\mid$ ``is'') = 1/1 = 1\\
+
+\item P(``hot'' $\mid$ ``weather'', ``is'') = 1/2\\
+
+\item P(``is'' $\mid$ ``the'', ``weather'') = 2/3\\
+
+\item P(``up'' $\mid$ ``to'', ``put'') = 1/1 = 1\\
+
+
+\end{itemize}
+
+
+
+\newpage
+%% ===============================================================
+% QUESTION #4 :  recall, precision, F scores
+%% =============================================================
+
+
+\item (18 pts) Consider the sentence:  \\
+{\tt John Smith planned to fish for silver trout and char but he forgot to bring the fishing gear}
+
+Suppose your part-of-speech (POS) tagger assigns these POS tags to the sentence:
+
+{\tt John/NOUN Smith/NOUN planned/VERB to/PREP fish/NOUN for/PREP silver/NOUN trout/NOUN
+and/CONJ char/VERB but/CONJ he/PRO forgot/VERB to/INF bring/VERB the/ART fishing/VERB gear/NOUN}
+
+Assume that the {\bf correct} POS tags for the sentence are:
+
+{\tt John/NOUN Smith/NOUN planned/VERB to/INF fish/VERB for/PREP silver/ADJ
+trout/NOUN and/CONJ char/NOUN but/CONJ he/PRO forgot/VERB to/INF
+bring/VERB the/ART fishing/GER gear/NOUN} \\
+
+Based on the information above, answer the questions below. Please
+leave your answers in fractional form!
+
+\begin{enumerate}
+
+\item What is the overall accuracy of your POS tagger? Answer: 13/18
+
+\item What is the recall of your POS tagger for verbs? Answer : 3/4
+
+\item What is the precision of your POS tagger for verbs? Answer: 3/5
+
+\item What is the recall of your POS tagger for nouns? Answer: 4/5
+
+\item What is the precision of your POS tagger for nouns? Answer: 4/6
+
+\item What is the recall of your POS tagger for prepositions (PREP tag)? Answer: 1
+
+\item What is the precision of your POS tagger for prepositions (PREP tag)? Answer: 1/2
+
+\item Using the \textbf{correct} POS tags, what is the lexical
+  generation probability P(planned $\mid$ VERB)? Answer: 1/4
+
+\item Using the \textbf{correct} POS tags, what is P(VERB $\mid$
+  planned), which means the probability that the word ``planned''
+  should have the tag VERB? Answer: 1/1
+
+\end{enumerate}
+
+
+\newpage
+%% ===============================================================
+% QUESTION #5 :  N-gram language modeling for POS tagging
+%% =============================================================
+
+\item (12 pts) Consider the   probability that the sentence {\it ``A
+    witty saying proves nothing''} 
+  (a quote from Voltaire) should be assigned the 
+  part-of-speech (POS) tag sequence {\it ``ART ADJ NOUN VERB NOUN''}. 
+
+\begin{center}
+{\it P(ART ADJ NOUN VERB NOUN $\mid$ A witty saying proves nothing)}
+\end{center}
+
+If you perform statistical part-of-speech tagging with N-gram language
+models to compute  this probability, show the equation that would
+be used for each type of N-gram language model below. 
+You must instantiate the equation with the specific words and
+part-of-speech tags shown above, but no numbers are needed. 
+
+If necessary, use the symbol $\phi_{0}$ to denote the beginning of a
+sentence (i.e., the position immediately to the left of the first
+word) and the symbol $\phi_{-1}$ to denote two positions to the left
+of the first word.
+
+\begin{enumerate}
+\item Show the equation using a unigram language model. \\
+Answer: P(A$\mid$ART).P(ART).P(witty$\mid$ADJ).P(ADJ).P(saying$\mid$NOUN).P(NOUN).P(proves$\mid$VERB).\\P(VERB).P(nothing$\mid$NOUN).P(NOUN)\\
+\item Show the equation using a bigram language model. \\ 
+Answer: P(ART$\mid\phi_{0}$).P(A$\mid$ART).P(ADJ$\mid$ART).P(witty$\mid$ADJ).P(NOUN$\mid$ADJ).P(saying$\mid$NOUN).\\P(VERB$\mid$NOUN).P(proves$\mid$VERB).P(NOUN$\mid$VERB).P(nothing$\mid$NOUN)\\
+\item Show the equation using a trigram language model.
+Each trigram should be written as $P(Z \mid X~Y)$, where X
+precedes Y in the input. \\
+Answer: P(ART$\mid\phi_{-1}\phi_{0}$).P(A$\mid$ART).P(ADJ$\mid\phi_{0}$ART).P(witty$\mid$ADJ).P(NOUN$\mid$ART ADJ).\\P(saying$\mid$NOUN).P(VERB$\mid$ADJ NOUN).P(proves$\mid$VERB).P(NOUN$\mid$NOUN VERB).\\P(nothing$\mid$NOUN)\\
+\end{enumerate}
+
+
+
+\newpage
+\underline{\textbf{Question \#6 is for CS-6340 students ONLY!}}  \\
+
+%% ================================================================
+% QUESTION #5: Top-down Chart Parsing
+%% ================================================================
+
+\item (18 pts) Consider the grammar and lexicon below:
+
+\begin{center}
+\begin{tabular}{|ll|} \hline
+\textbf{Grammar} & \textbf{Lexicon} \\  \hline
+S $\rightarrow$ NP VP & {\it trust} : noun, verb \\
+NP $\rightarrow$ noun & {\it shrinks} :  noun, verb \\
+NP $\rightarrow$ noun noun  & ~ \\
+VP $\rightarrow$ verb & ~ \\
+VP $\rightarrow$ verb NP & ~ \\  \hline
+\end{tabular}
+\end{center}
+
+\vspace*{.1in} List all of the entries that would be put on the chart during
+{\bf top-down chart parsing} for the sentence {\bf `trust shrinks'}.
+Each chart entry should be a constituent or a rule, with a start
+and end position indicating which words have been matched by the
+constituent or rule.
+
+To get you started, the list below contains chart entries for the
+part-of-speech tag constituents for the words `trust' and `shrinks'
+and for three rules that should be on the chart. Your job is to complete
+this list by adding the rest of the constituents and rules that would
+be put on the chart during parsing.
+
+For the rules, please use an asterisk (*) to separate the components
+of the rule that have been matched from the ones that have not yet been
+matched. For example, the rule ``NP $\rightarrow$ * noun noun [1-1]'' means that
+no nouns in this rule have been matched yet but the rule
+can begin matching constituents starting in position 1. \\ 
+
+\begin{center}
+{\bf Complete the Chart Entries for Top-down Chart Parsing of `Trust Shrinks'} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{lc} 
+{\bf Constituent/Rule~~~} & {\bf ~~~Start-End} \\ \hline
+noun(``trust'') &  [1-2] \\
+verb(``trust'') & [1-2] \\
+noun(``shrinks'') & [2-3] \\
+verb(``shrinks'') & [2-3] \\
+S $\rightarrow$ * NP VP & [1-1] \\
+NP $\rightarrow$ * noun & [1-1] \\ 
+NP $\rightarrow$ * noun noun & [1-1] \\ \hline
+VP $\rightarrow$ * verb & [1-1] \\
+VP $\rightarrow$ * verb NP & [1-1] \\
+NP $\rightarrow$ noun * & [1-2]\\
+NP $\rightarrow$ noun * noun & [1-2]\\
+S $\rightarrow$ NP * VP & [1-2]\\
+VP $\rightarrow$ verb * & [1-2]\\
+VP $\rightarrow$ verb * NP & [1-2]\\
+NP $\rightarrow$ noun noun * & [1-3]\\
+VP $\rightarrow$ verb NP * & [1-3]\\
+NP $\rightarrow$ noun * & [2-3]\\
+NP $\rightarrow$ noun * noun & [2-3]\\
+S $\rightarrow$ NP * VP & [2-3]\\
+S $\rightarrow$ NP VP * & [1-3]\\
+VP $\rightarrow$ verb * & [2-3]\\
+VP $\rightarrow$ verb * NP & [2-3]\\
+\end{tabular}
+\end{center}
+
+
+
+\end{enumerate}  % END OF WRITTEN QUESTIONS
+
+\end{document}
